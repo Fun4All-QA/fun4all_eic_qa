@@ -1,6 +1,6 @@
 Universe	= vanilla
 Executable 	= myscript.csh
-notification 	= Complete
+notification 	= Never
 notify_user	= emailHere
 Output  	= condor.out
 Error           = condor.err

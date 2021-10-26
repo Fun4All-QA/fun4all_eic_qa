@@ -113,7 +113,7 @@ int Fun4All_G4_EICDetector(
   // Simple Input generator:
   if (Input::SIMPLE)
   {
-    INPUTGENERATOR::SimpleEventGenerator[0]->add_particles("pi-", 1);
+    INPUTGENERATOR::SimpleEventGenerator[0]->add_particles("mu-", 1);
     if (Input::HEPMC || Input::EMBED)
     {
       INPUTGENERATOR::SimpleEventGenerator[0]->set_reuse_existing_vertex(true);
@@ -129,7 +129,7 @@ int Fun4All_G4_EICDetector(
     }
     INPUTGENERATOR::SimpleEventGenerator[0]->set_eta_range(-4, 4);
     INPUTGENERATOR::SimpleEventGenerator[0]->set_phi_range(-M_PI, M_PI);
-    INPUTGENERATOR::SimpleEventGenerator[0]->set_p_range(0., 30.);
+    INPUTGENERATOR::SimpleEventGenerator[0]->set_p_range(4., 4.);
   }
   // Upsilons
   if (Input::UPSILON)
