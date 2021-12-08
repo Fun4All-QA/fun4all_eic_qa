@@ -115,12 +115,15 @@ int EvalRootTTreeReco::process_event(PHCompositeNode *topNode)
 
   if (g4hits && !m_DropHitsFlag)
   {
+    double esum = 0.;
     evaltree->set_nhits(g4hits->size());
     PHG4HitContainer::ConstRange hit_range = g4hits->getHits();
     for (PHG4HitContainer::ConstIterator hit_iter = hit_range.first; hit_iter != hit_range.second; hit_iter++)
     {
       evaltree->AddHit(hit_iter->second);
+      esum += hit_iter->second->get_edep();
     }
+    evaltree->set_hesum(esum);
   }
 
   // add towers
@@ -129,6 +132,7 @@ int EvalRootTTreeReco::process_event(PHCompositeNode *topNode)
   RawTowerContainer *g4towers = findNode::getClass<RawTowerContainer>(topNode, m_TowerNodeName);
   if (g4towers)
   {
+    double esum = 0.;
     evaltree->set_ntowers(g4towers->size());
     RawTowerContainer::ConstRange tower_range = g4towers->getTowers();
     for (RawTowerContainer::ConstIterator tower_iter = tower_range.first; tower_iter != tower_range.second; tower_iter++)
@@ -142,18 +146,23 @@ int EvalRootTTreeReco::process_event(PHCompositeNode *topNode)
       evaltwr->set_tx(geom->get_center_x());
       evaltwr->set_ty(geom->get_center_y());
       evaltwr->set_tz(geom->get_center_z());
+      esum += twr->get_energy();
     }
+      evaltree->set_tesum(esum);
   }
   // Clusters
   RawClusterContainer *clusters = findNode::getClass<RawClusterContainer>(topNode, m_ClusterNodeName);
   if (clusters)
   {
+    double esum = 0.;
     evaltree->set_nclusters(clusters->size());
     for (const auto &iterator : clusters->getClustersMap())
     {
       RawCluster *cluster = iterator.second;
       evaltree->AddCluster(cluster);
+      esum += cluster->get_energy();
     }
+      evaltree->set_cesum(esum);
   }
 
   return Fun4AllReturnCodes::EVENT_OK;
