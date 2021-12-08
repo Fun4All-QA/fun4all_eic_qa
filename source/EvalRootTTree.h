@@ -63,14 +63,23 @@ class EvalRootTTree : public PHObject
   // calorimeter hits, get hit class, hit accessors are in hit class
   void set_nhits(const int n) { nhits = n; }
   int get_nhits() const { return nhits; }
+  void set_hesum(const double d) {hesum = d;}
+  double get_hesum() const {return hesum;}
+
   EvalHit* get_hit(const size_t i) const;
 
   void set_ntowers(const int n) { ntowers = n; }
   int get_ntowers() const { return ntowers; }
+  void set_tesum(const double d) {tesum = d;}
+  double get_tesum() const {return tesum;}
+
   EvalTower* get_tower(const size_t i) const;
 
   void set_nclusters(const int n) { nclusters = n; }
   int get_nclusters() const { return nclusters; }
+  void set_cesum(const double d) {cesum = d;}
+  double get_cesum() const {return cesum;}
+
   EvalCluster* get_cluster(const size_t i) const;
 
  private:
@@ -83,6 +92,9 @@ class EvalRootTTree : public PHObject
   int nhits = 0;
   int ntowers = 0;
   int nclusters = 0;
+  double hesum = 0.;
+  double tesum = 0.;
+  double cesum = 0.;
   double gvx = NAN;
   double gvy = NAN;
   double gvz = NAN;
