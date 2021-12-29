@@ -106,7 +106,7 @@ class EvalRootTTree : public PHObject
   double gphi = NAN;
   double gtheta = NAN;
 
-  ClassDef(EvalRootTTree, 1)
+  ClassDef(EvalRootTTree, 2)
 };
 
 #endif
