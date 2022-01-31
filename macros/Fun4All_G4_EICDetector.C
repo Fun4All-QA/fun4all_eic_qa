@@ -247,7 +247,9 @@ int Fun4All_G4_EICDetector(
   G4HCALOUT::TowerDigi = RawTowerDigitizer::kNo_digitization;
 
   // EICDetector geometry - barrel
-  Enable::DIRC = true;
+// DIRC occasionally produces lots of photons which allocates tons of memory
+// which we cannot handle right now, needs fixing
+//  Enable::DIRC = true; 
 
   // EICDetector geometry - 'hadron' direction
   Enable::RICH = true;
