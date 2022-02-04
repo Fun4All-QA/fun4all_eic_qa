@@ -58,7 +58,7 @@ end
 echo Creation done
 
 set j = 0
-set count = 1
+set count = 0
 
 while ($j < $nJobs)
    # echo inloop
