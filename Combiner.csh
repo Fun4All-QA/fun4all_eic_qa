@@ -9,7 +9,7 @@
 
 set FILE = condor.out
 set STRING = condorjob done
-set nJobs = 1000
+set nJobs = noOfJobsCombiner
 set j = 0
 
 mkdir EvalFiles
