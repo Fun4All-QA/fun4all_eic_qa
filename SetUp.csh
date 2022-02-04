@@ -17,6 +17,7 @@ set highEnergy = 4.
 
  sed -i "s/pi-/$particle/g" macros/Fun4All_G4_EICDetector.C
  sed -i "s/emailHere/$email/g" macros/condor.job
+ sed -i "s/noOfJobsCombiner/$nJobs/g" Combiner.csh
 #sed -i "s/emailHere/$email/g" hadd.job
  sed -i "s/nEvents/$events/g" macros/myscript.csh
  sed -i "s/lowEnergyLimit/$lowEnergy/g" macros/Fun4All_G4_EICDetector.C
