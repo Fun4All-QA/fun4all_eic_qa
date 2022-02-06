@@ -51,6 +51,12 @@ void EvalRootTTree::Reset()
   }
   event = 0;
   gpid = -99999;
+  nhits = 0;
+  ntowers = 0;
+  nclusters = 0;
+  hesum = 0.;
+  tesum = 0.;
+  cesum = 0.;
   gvx = NAN;
   gvy = NAN;
   gvz = NAN;
@@ -61,6 +67,7 @@ void EvalRootTTree::Reset()
   geta = NAN;
   gphi = NAN;
   gtheta = NAN;
+  
 }
 
 EvalHit *
