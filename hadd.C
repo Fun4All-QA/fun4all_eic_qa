@@ -25,8 +25,8 @@ void hadd(TString detector) {
 
   int nCopies = successfulJobs; 
 
-  if(gSystem->AccessPathName("EvalFiles/Eval_" + detector + "_1.root")) {
-    for(int i = 2; i <= nCopies; i++){
+  if(gSystem->AccessPathName("EvalFiles/Eval_" + detector + "_0.root")) {
+    for(int i = 1; i < nCopies; i++){
       gSystem->CopyFile("hsimple.root", "EvalFiles/Eval_" + detector + "_" + TString::Itoa(i,10) + ".root");
     }
   }
@@ -39,7 +39,7 @@ void hadd(TString detector) {
   Target = TFile::Open("merged_Eval_" + detector + ".root", "RECREATE" ); 
   FileList = new TList();
   
-  for(int i = 1; i <= nCopies; i++){
+  for(int i = 0; i < nCopies; i++){
     FileList->Add( TFile::Open("EvalFiles/Eval_" + detector + "_" + TString::Itoa(i,10) + ".root"));
   }
       
