@@ -314,14 +314,15 @@ int Fun4All_G4_EICDetector(
   // Magnet Settings
   //---------------
 
-  //  const string magfield = "1.4"; // alternatively to specify a constant magnetic field, give a float number, which will be translated to solenoidal field in T, if string use as fieldmap name (including path)
+  //  G4MAGNET::magfield = "1.4"; // alternatively to specify a constant magnetic field, give a float number, which will be translated to solenoidal field in T, if string use as fieldmap name (including path)
+  // G4MAGNET::magfield = "0"; // field off
 // This is the 3d fieldmap setting (default)
-//  G4MAGNET::magfield = string(getenv("CALIBRATIONROOT")) + string("/Field/Map/sphenix3dbigmapxyz.root");  // default map from the calibration database
-//  G4MAGNET::magfield_rescale = 1.;  // in case you want to play with field
+  //  G4MAGNET::magfield = string(getenv("CALIBRATIONROOT")) + string("/Field/Map/sphenix3dbigmapxyz.root");  // default map from the calibration database
+  //  G4MAGNET::magfield_rescale = 1.;  // in case you want to play with field
 
-// for 2d map use these settings
+// for old 2d map use these settings
   //  G4MAGNET::magfield = string(getenv("CALIBRATIONROOT")) + string("/Field/Map/sPHENIX.2d.root");  // default map from the calibration database
-//  G4MAGNET::magfield_rescale = -1.4 / 1.5;  // make consistent with expected Babar field strength of 1.4T
+  //  G4MAGNET::magfield_rescale = -1.4 / 1.5;  // make consistent with expected Babar field strength of 1.4T
 
   //---------------
   // Pythia Decayer
