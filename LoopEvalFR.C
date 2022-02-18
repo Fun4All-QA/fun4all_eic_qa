@@ -781,7 +781,9 @@ TH2D *te_minus_ge_by_ge_ge_EtaCut_temp = new TH2D("te_minus_ge_by_ge_ge_EtaCut_t
   for(int sno = 0; sno < nSlicesx; sno++){
     f->GetList()->Add(slices[sno]);
   }
-
+	
+  f->Write();
+	
   gStyle -> SetOptStat(11);
   gStyle -> SetOptFit(112);
   
