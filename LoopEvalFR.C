@@ -27,7 +27,7 @@
 
 R__LOAD_LIBRARY(libeicqa_modules.so)
 
-void LoopEvalFR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1, Double_t energyCut = 0.0, int trial = 1, int MIP_theta_parametrisation = 1)
+void LoopEvalFR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1, Double_t energyCut = 0.0, int MIP_theta_parametrisation = 1)
 {
 
   Double_t EMC_cut = 0.0;
@@ -147,10 +147,8 @@ void LoopEvalFR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1,
   TH2D *te_minus_ge_by_ge_ge_EtaCut_CircularCut = new TH2D("te_minus_ge_by_ge_ge_EtaCut_CircularCut","#frac{#Delta e_{agg}}{truth e} vs truth e",200,0,30,200,-1.5,2);
   TH2D *te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated = new TH2D("te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated","#frac{#Delta e_{agg}}{truth e} vs truth e",200,0,30,200,-1.5,1.5);
 
-  //if(trial == 1){
   TH2D *te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_FEMC = new TH2D("te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_FEMC","#frac{#Delta e_{agg}}{truth e} vs truth e",nSlicesx,binLimitArray,nSlicesy,te_minus_ge_by_ge_ge_min,te_minus_ge_by_ge_ge_max);
   TH2D *te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_FHCAL = new TH2D("te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_FHCAL","#frac{#Delta e_{agg}}{truth e} vs truth e",nSlicesx,binLimitArray,nSlicesy,te_minus_ge_by_ge_ge_min,te_minus_ge_by_ge_ge_max);
-  //}
 
   TH2D *te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp = new TH2D("te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp","#frac{#Delta e_{agg}}{truth e} vs truth e",nSlicesx,binLimitArray,nSlicesy,te_minus_ge_by_ge_ge_min,te_minus_ge_by_ge_ge_max); // histogram from which mean vs ge, sigma vs ge, and reduced_chi2 vs ge plots are derived
 
@@ -394,10 +392,10 @@ void LoopEvalFR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1,
 	  mean_te_by_ge_ge_EtaCut_CircularCut_FHCAL->Fill(ge, te_aggregate_FHCAL_CircularCut/ge);
 	  mean_te_by_ge_ge_EtaCut_CircularCut_FEMC->Fill(ge, (te_aggregate_CircularCut-te_aggregate_FHCAL_CircularCut)/ge);
      
-	  if(trial == 1){
-	    te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_FHCAL->Fill(ge, (te_aggregate_FHCAL_CircularCut-ge)/ge);
-	    te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_FEMC->Fill(ge, (te_aggregate_CircularCut - te_aggregate_FHCAL_CircularCut-ge)/ge);
-	  }
+
+	  te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_FHCAL->Fill(ge, (te_aggregate_FHCAL_CircularCut-ge)/ge);
+	  te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_FEMC->Fill(ge, (te_aggregate_CircularCut - te_aggregate_FHCAL_CircularCut-ge)/ge);
+
      
 	  if(debug==1){
 	    cout<<"(ge, te_aggregate_CircularCut/ge): ("<<ge<<", "<<te_aggregate_CircularCut/ge<<")\n"; 
@@ -691,38 +689,6 @@ void LoopEvalFR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1,
    int plusOne = sno+1;
    TString sname = "slice " + arr[sno];
    slices[sno] = te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp->ProjectionY(sname, plusOne, plusOne);
- }
-
- if(trial == 1){
-
-   TH1D* slice7_FHCAL;
-   TH1D* slice7_FEMC;    
-
-   slice7_FHCAL = te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_FHCAL->ProjectionY("slice7_FHCAL", 7, 7);
-   slice7_FEMC = te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_FEMC->ProjectionY("slice7_FEMC", 7, 7);
-
-   slice7_FHCAL->GetXaxis()->SetTitle("#Delta e^{agg}/ ge");
-   slice7_FHCAL->GetXaxis()->SetLabelSize(0.05);  
-   slice7_FHCAL->GetXaxis()->SetTitleSize(0.05);
-   slice7_FHCAL->GetYaxis()->SetTitle("Counts");
-   slice7_FHCAL->GetYaxis()->SetLabelSize(0.05);  
-   slice7_FHCAL->GetYaxis()->SetTitleSize(0.05);
-
-   slice7_FEMC->GetXaxis()->SetTitle("#Delta e^{agg}/ ge");
-   slice7_FEMC->GetXaxis()->SetLabelSize(0.05);  
-   slice7_FEMC->GetXaxis()->SetTitleSize(0.05);
-   slice7_FEMC->GetYaxis()->SetTitle("Counts");
-   slice7_FEMC->GetYaxis()->SetLabelSize(0.05);  
-   slice7_FEMC->GetYaxis()->SetTitleSize(0.05);
-
-   slice7_FHCAL -> Fit("fit", "M+");
-   slice7_FHCAL -> Draw("hist same");
-   c->Print("FHCAL_FEMC_sigmaE_slice7_FHCAL.png");
-   
-   slice7_FEMC -> Fit("fit", "M+");
-   slice7_FEMC -> Draw("hist same");
-   c->Print("FHCAL_FEMC_sigmaE_slice7_FEMC.png");
-   
  }
 
  if(debug==1){
