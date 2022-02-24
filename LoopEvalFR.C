@@ -76,7 +76,7 @@ void LoopEvalFR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1,
   
   //variable binning code end
 
-  TString detector = "FHCAL_FEMC";
+  TString detector = "FEMC_FHCAL";
   TFile *f1 = new TFile("merged_Eval_FHCAL.root","READ"); 
   TFile *f2 = new TFile("merged_Eval_FEMC.root","READ"); 
   //TFile *f1 = new TFile("../../../simrankaur/Fun4All-Calorimeter-Macros_copy/final/Pion_fhcalcorrected/Eval_FHCAL.root","READ");
@@ -829,7 +829,7 @@ void LoopEvalFR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1,
     std::cout<<"\nWrite Histograms to File\n";
   }
 
-  TFile *f = new TFile("energy_verification_EtaCut_CircularCut" + detector + ".root","RECREATE"); 
+  TFile *f = new TFile("energy_verification_EtaCut_CircularCut_" + detector + ".root","RECREATE"); 
     
   f->GetList()->Add(te_by_ge_ge_EtaCut);
   f->GetList()->Add(te_by_ge_ge_EtaCut_CircularCut);
@@ -847,7 +847,8 @@ void LoopEvalFR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1,
   for(int sno = 0; sno < nSlicesx; sno++){
     f->GetList()->Add(slices[sno]);
   }
-
+  f->Write()
+	  
   gStyle -> SetOptStat(11);
   gStyle -> SetOptFit(112);
   
