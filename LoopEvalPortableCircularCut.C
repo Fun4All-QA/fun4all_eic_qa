@@ -955,19 +955,19 @@ void LoopEvalPortableCircularCut(TString detector, int print = 0, int mips = 1, 
     te_aggregate_EtaCut_CircularCut->Draw();
     c->Print(detector + "_te_aggregate_EtaCut_CircularCut.png");
 
-    //hist_geta->Draw("colz");
-    //c->Print(detector + "_hist_geta.png");
+    hist_geta->Draw("colz");
+    c->Print(detector + "_hist_geta.png");
     
     gStyle -> SetOptStat(0);
     gStyle -> SetOptFit(0);
 
-    //te_aggregate_by_ge->Draw("colz");
-    //c->Print(detector + "_te_aggregate_by_ge.png");
+    te_aggregate_by_ge->Draw("colz");
+    c->Print(detector + "_te_aggregate_by_ge.png");
 
-    //te_aggregate_by_geta->Draw("colz");
-    //c->Print(detector + "_te_aggregate_by_geta.png");
+    te_aggregate_by_geta->Draw("colz");
+    c->Print(detector + "_te_aggregate_by_geta.png");
 
-    /* TF1 *polFit = new TF1("polFit","pol4",eta_min,eta_max);
+    TF1 *polFit = new TF1("polFit","pol4",eta_min,eta_max);
     TF1 *polFit2 = new TF1("polFit2","pol4",2*atan(exp(-eta_min)),2*atan(exp(-eta_max)));
     if (detector == "FHCAL"){
       polFit = new TF1("polFit","pol7",eta_min+0.2,eta_max-0.55);
@@ -1015,7 +1015,7 @@ void LoopEvalPortableCircularCut(TString detector, int print = 0, int mips = 1, 
       mean_te_gtheta_EtaCut->Draw("colz");
       c->Print(detector + "_mean_te_gtheta_EtaCut.png");
       std::cout<<"reduced_chi2 of theta fit: "<<polFit2->GetChisquare()/polFit2->GetNDF()<<"\n";
-      }*/
+      }
   }
 
   c->Close();
