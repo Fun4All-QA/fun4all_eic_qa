@@ -1,3 +1,12 @@
+# > SetUp.csh
+# - Submits the required number of condor jobs according to the parameters provided; helps in submitting jobs in batches 
+# - Output file - multiple 'macros*' directories
+
+# Authors - Siddhant Rathi (me190003061@iiti.ac.in)
+#           Sagar Joshi (ee190002054@iiti.ac.in)
+
+# v1.0
+
 #!/usr/local/bin/tcsh
  setenv HOME /eic/u/$LOGNAME
  source /etc/csh.login
