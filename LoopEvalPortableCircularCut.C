@@ -287,7 +287,7 @@ void LoopEvalPortableCircularCut(TString detector, int print = 0, int mips = 1, 
   TH1D *counts_towerCounts_EtaCut = new TH1D("counts_towerCounts_EtaCut","n_towers",200,-1,towerCounts_max);
   TH1D *counts_towerCounts_EtaCut_CircularCut = new TH1D("counts_towerCounts_EtaCut_CircularCut","n_towers",200,-1,towerCounts_CircularCut_max);
 
-  TH1D *te_aggregate_EtaCut_CircularCut = new TH1D("te_aggregate_EtaCut_CircularCut","",200,0);
+  TH1D *te_aggregate_EtaCut_CircularCut = new TH1D("te_aggregate_EtaCut_CircularCut","",200,0, 30);
   TH1D *hist_geta = new TH1D("hist_geta","",200,-4,4);
 
   TH2D *dphi_dtheta_EtaCut = new TH2D("dphi_dtheta_EtaCut","dphi vs dtheta",200,-1,1,200,-1,1);
