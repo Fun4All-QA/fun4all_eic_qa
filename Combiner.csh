@@ -1,3 +1,15 @@
+# > Combiner.csh
+# - Creates a folder EvalFiles containing all the output root files from the condor jobs
+# - The failed and incomplete jobs are stored at `brownJobs/` and `brownJobs/redJobs/` for investigation
+# - The combined statistics are stored at merged_Eval_<detector>.root
+# - Output file - merged_Eval_<detector>.root, folders as described above
+
+# v1.0
+
+# Authors
+# Siddhant Rathi   (me190003061@iiti.ac.in)
+# Sagar Joshi      (ee190002054@iiti.ac.in)
+
 #!/usr/local/bin/tcsh
  setenv HOME /eic/u/$LOGNAME
  source /etc/csh.login
