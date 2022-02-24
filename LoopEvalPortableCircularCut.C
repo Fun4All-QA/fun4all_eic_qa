@@ -1,21 +1,22 @@
 /*
-  - Tower energy plots with manual clustering
-  - Eta and Circular Cuts
-  - Individual detectors
-  - Standalone
-  - Output file - energy_verification_EtaCut_CircularCut_detector.root
-  - Plots made - [counts for twr_count], [te/ge vs ge], [tphi vs gphi], [theta vs gtheta], [dphi vs dtheta], 
-  [(te-ge)/ge vs ge], [sigma_e vs ge], [mean_e vs ge], [chi2_e vs ge], slices for the [(te-ge)/ge vs ge] 
-  plot, both with and without circular cuts.
+> LoopEvalPortableCircularCut.C(TString detector, int print = 0, int mips = 1, int debug = 0, Double_t energyCutAggregate = 0.0, Double_t energyCut = 0.0)
+- Creates analysis plots for the individual detector passed as an argument
+- Processing - Eta Cuts, Manual Clustering (or elliptical cuts based on difference between generated and detected azimuth and polar angle), Recalibration, Tower energy cuts on individual towers as well as tower energy aggregated over an event
+- Arguments
+ # detector - CEMC, EEMC, FEMC, FHCAL, HCALIN, HCALOUT
+ # print - saves plots as .png files if not 0
+ # mips - enable MIPs characterization (used with muons as particles; returns an equation that describes energy deposition by MIPs as a function of the polar angle, which can be used for a theta-dependent energy cut that eliminates MIPs)
+ # debug - prints debugging messages if not 0; Pipe the output to a file while using this
+ # energyCutAggregate - specify the value for the tower energy cut on FEMC+FHCAL
+ # energyCut - specify the value for the tower energy cut on individual towers
+- Output file - Energy_verification_EtaCut_CircularCut_<detector>.root, and the .png plots if generated
 */
 
 /*
-  Authors:
- 
-  Sagar Joshi      (ee190002054@iiti.ac.in)
-  Siddhant Rathi   (me190003061@iiti.ac.in)
-	    
-  version - 1.2
+  Authors -	Siddhant Rathi   (me190003061@iiti.ac.in)  	
+  		Sagar Joshi      (ee190002054@iiti.ac.in)
+  		
+  version - 2.0
 */
 
 #include <iostream>
