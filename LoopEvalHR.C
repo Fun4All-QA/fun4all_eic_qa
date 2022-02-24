@@ -26,9 +26,9 @@
 
 R__LOAD_LIBRARY(libeicqa_modules.so)
 
-void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.0, Double_t energyCut = 0.0, int MIP_theta_parametrisation = 1){
+void LoopEvalHR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1, Double_t energyCut = 0.0, int MIP_theta_parametrisation = 1){
 
-  Double_t EMC_cut = 0.2;
+  Double_t EMC_cut = 0.0;
   TF1 *mip_pmzn_energy_cut_ftheta = new TF1("mip_pmzn_energy_cut_ftheta", "(9.46093e-01) - 1.62771*x + 1.37776*(x^2) - (5.4996e-01)*(x^3) + (8.82673e-02)*(x^4)"); 
   
 
@@ -36,6 +36,44 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
     throw std::invalid_argument("We do not currently support theta-parametrized \nMIP cut on EMC simultaneously with individual tower cuts \non other detectors.:(;");
   } 
 
+
+  //variable binning code
+  int arraySizeBins = 0;           //size of the bins array
+  Double_t arraySizeBinsLoop = 0;  //loop variable
+  int lowThresholdBins = 2;        //number of bins below the threshold bin
+  int highThresholdBins = 9;      //number of bins above the threshold bin
+  Double_t maxEnergyBin = 30;      //highest energy
+  Double_t lowEnergyBin = 3;       //threshold energy 
+
+  //calculating the number of bins required
+  while(arraySizeBinsLoop < maxEnergyBin){
+    arraySizeBins += 1;
+    if(arraySizeBinsLoop < lowEnergyBin){
+      arraySizeBinsLoop += lowEnergyBin/lowThresholdBins;
+    }
+    else{
+      arraySizeBinsLoop += (maxEnergyBin - lowEnergyBin)/highThresholdBins;
+    }
+  }
+
+  Double_t binLimitArray[arraySizeBins + 1];
+
+  //filing the array containing bin lower limits
+  for(int i = 0; i <= arraySizeBins; i++){
+    if(i <= lowThresholdBins){
+      binLimitArray[i] = lowEnergyBin*i/lowThresholdBins;
+    }
+    else{
+      binLimitArray[i] = lowEnergyBin  + ((maxEnergyBin - lowEnergyBin)*(i - lowThresholdBins)/highThresholdBins);
+    }
+  }
+
+  //print array
+  for(int i = 0; i < arraySizeBins; i++){
+    cout<<"element "<<i<<" of the bin array is "<<binLimitArray[i]<<" \n";
+  }
+  
+  //variable binning code end
 
   TString detector = "HCALIN_HCALOUT_CEMC";
   TFile *f1 = new TFile("merged_Eval_HCALIN.root","READ");
@@ -69,7 +107,7 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
   long double total_te_CircularCut = 0;
   long double total_ge = 0; 
 
-  int nSlicesx = 10; // Number of ge-axis slices taken for making sigma_e vs ge plot
+  int nSlicesx = arraySizeBins; // Number of ge-axis slices taken for making sigma_e vs ge plot
   int nSlicesy = 350;
   Double_t eta_min, eta_max; // Eta range of detectors
   Double_t x_radius_HCALIN = 0.15; // Length of semi-minor axis of circular (elliptical) in HCALIN
@@ -94,7 +132,7 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
   eta_max = 0.92;
   sigma_min = 0;
   sigma_max = 1.5;
-  mean_min = -0.3;
+  mean_min = -0.7;
   mean_max = 0.3;
   chi2_min = 0;
   chi2_max = 2.23;
@@ -109,9 +147,9 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
   TH2D *te_minus_ge_by_ge_ge_EtaCut = new TH2D("te_minus_ge_by_ge_ge_EtaCut","#frac{#Delta e_{agg}}{truth e} vs truth e",200,0,30,200,-2,1);
   TH2D *te_minus_ge_by_ge_ge_EtaCut_CircularCut = new TH2D("te_minus_ge_by_ge_ge_EtaCut_CircularCut","#frac{#Delta e_{agg}}{truth e} vs truth e",200,0,30,200,-1.5,2);;
   TH2D *te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated = new TH2D("te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated","#frac{#Delta e_{agg}}{truth e} vs truth e",200,0,30,200,-1.5,1.5);
-  TH2D *te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp = new TH2D("te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp","#frac{#Delta e_{agg}}{truth e} vs truth e",nSlicesx,0,30,nSlicesy,te_minus_ge_by_ge_ge_min,te_minus_ge_by_ge_ge_max); // histogram from which mean vs ge, sigma vs ge, and reduced_chi2 vs ge plots are derived
+  TH2D *te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp = new TH2D("te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp","#frac{#Delta e_{agg}}{truth e} vs truth e",nSlicesx,binLimitArray,nSlicesy,te_minus_ge_by_ge_ge_min,te_minus_ge_by_ge_ge_max); // histogram from which mean vs ge, sigma vs ge, and reduced_chi2 vs ge plots are derived
 
-  TH2D *te_minus_ge_by_ge_ge_EtaCut_temp = new TH2D("te_minus_ge_by_ge_ge_EtaCut_temp","#frac{#Delta e_{agg}}{truth e} vs truth e",nSlicesx,0,30,500,-0.99,1.3); // histogram from which mean vs ge, sigma vs ge, and reduced_chi2 vs ge plots are derived
+  TH2D *te_minus_ge_by_ge_ge_EtaCut_temp = new TH2D("te_minus_ge_by_ge_ge_EtaCut_temp","#frac{#Delta e_{agg}}{truth e} vs truth e",nSlicesx,binLimitArray,500,-0.99,1.3); // histogram from which mean vs ge, sigma vs ge, and reduced_chi2 vs ge plots are derived
 
   TH2D *te_by_ge_ge_EtaCut = new TH2D("te_by_ge_ge_EtaCut","te_{agg}/ge vs ge",200,0,30,200,-0.5,1.5);
   TH2D *te_by_ge_ge_EtaCut_CircularCut = new TH2D("te_by_ge_ge_EtaCut_CircularCut","te_{agg}/ge vs ge",200,0,30,200,-1,2);
@@ -119,15 +157,16 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
   TH2D *te_by_ge_ge_EtaCut_CircularCut_HCALOUT = new TH2D("te_by_ge_ge_EtaCut_CircularCut_HCALOUT","te_{agg}/ge vs ge",200,0,30,200,-1,2);
   TH2D *te_by_ge_ge_EtaCut_CircularCut_CEMC = new TH2D("te_by_ge_ge_EtaCut_CircularCut_CEMC","te_{agg}/ge vs ge",200,0,30,200,-1,2);
 
-  auto *mean_te_by_ge_ge_EtaCut_CircularCut = new TProfile("mean_te_by_ge_ge_EtaCut_CircularCut","Mean_{te/ge}",nSlicesx,0,30,-0.5,35);
-  auto *mean_te_by_ge_ge_EtaCut_CircularCut_HCALIN = new TProfile("mean_te_by_ge_ge_EtaCut_CircularCut_HCALIN","Mean_{te/ge}",nSlicesx,0,30,-0.5,35);
-  auto *mean_te_by_ge_ge_EtaCut_CircularCut_HCALOUT = new TProfile("mean_te_by_ge_ge_EtaCut_CircularCut_HCALOUT","Mean_{te/ge}",nSlicesx,0,30,-0.5,35);
-  auto *mean_te_by_ge_ge_EtaCut_CircularCut_CEMC = new TProfile("mean_te_by_ge_ge_EtaCut_CircularCut_CEMC","Mean_{te/ge}",nSlicesx,0,30,-0.5,35);
+  auto *mean_te_by_ge_ge_EtaCut_CircularCut = new TProfile("mean_te_by_ge_ge_EtaCut_CircularCut","Mean_{te/ge}",nSlicesx,binLimitArray,-0.5,35);
+  auto *mean_te_by_ge_ge_EtaCut_CircularCut_HCALIN = new TProfile("mean_te_by_ge_ge_EtaCut_CircularCut_HCALIN","Mean_{te/ge}",nSlicesx,binLimitArray,-0.5,35);
+  auto *mean_te_by_ge_ge_EtaCut_CircularCut_HCALOUT = new TProfile("mean_te_by_ge_ge_EtaCut_CircularCut_HCALOUT","Mean_{te/ge}",nSlicesx,binLimitArray,-0.5,35);
+  auto *mean_te_by_ge_ge_EtaCut_CircularCut_CEMC = new TProfile("mean_te_by_ge_ge_EtaCut_CircularCut_CEMC","Mean_{te/ge}",nSlicesx,binLimitArray,-0.5,35);
 
   T1->SetBranchAddress("DST#EvalTTree_HCALIN",&evaltree1);
   T2->SetBranchAddress("DST#EvalTTree_HCALOUT",&evaltree2);  
   T3->SetBranchAddress("DST#EvalTTree_CEMC",&evaltree3);
 
+  //T1->GetEntries()
   for(int i=0; i<T1->GetEntries(); i++) // We assume same no. of entries, since no cuts are applied
     {
       T1->GetEntry(i);
@@ -443,6 +482,10 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
   Double_t rf_integral_HCALIN = 0;
   Double_t weight_HCALIN = te_by_ge_ge_EtaCut_CircularCut_HCALIN->GetMean(2);
 
+  if(debug==1){
+    cout << "HCALIN weight is : " << weight_HCALIN << endl;
+  }
+
   //recalibrationArr1[0] = recalibration_firstSlice_FHCAL;
   //rf_integral_FHCAL += recalibrationArr1[0];
   //cout << "Recalibration factor for slice " << 1 << " of FHCAL is: " <<  recalibrationArr1[0] << endl;
@@ -465,6 +508,10 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
   Double_t recalibrationArr2[nSlicesx];
   Double_t rf_integral_HCALOUT = 0;
   Double_t weight_HCALOUT = te_by_ge_ge_EtaCut_CircularCut_HCALOUT->GetMean(2);
+
+  if(debug==1){
+    cout << "HCALOUT weight is : " << weight_HCALOUT << endl;
+  }
 
   //recalibrationArr2[0] = recalibration_firstSlice_HCALOUT;
   //rf_integral_HCALOUT += recalibrationArr2[0];
@@ -489,6 +536,10 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
   Double_t recalibrationArr3[nSlicesx];
   Double_t rf_integral_CEMC = 0;
   Double_t weight_CEMC = te_by_ge_ge_EtaCut_CircularCut_CEMC->GetMean(2);
+
+  if(debug==1){
+    cout << "CEMC weight is : " << weight_CEMC << endl;
+  }
 
   //recalibrationArr3[0] = recalibration_firstSlice_CEMC;
   //rf_integral_CEMC += recalibrationArr3[0];
@@ -520,9 +571,22 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
     Double_t gtheta = evaltree1->get_gtheta();
     Double_t ge = evaltree1->get_ge();
     Double_t te_aggregate_CircularCut = 0;
-    Double_t te_aggregate_CircularCut_normalised = 0;    
+    Double_t te_aggregate_CircularCut_normalised = 0;  
 
-    int recalibration_factor = ceil((ge/30.0)*(Double_t)nSlicesx)- 1;
+    int recalibration_factor = 0;
+
+    if(ge > lowEnergyBin){
+      Double_t eRangeBin = (maxEnergyBin - lowEnergyBin)/highThresholdBins;
+      recalibration_factor = (lowThresholdBins - 1) + ceil(ge/eRangeBin)- 1;
+    }
+ 
+    else{
+      recalibration_factor = ceil((ge/lowEnergyBin)*(Double_t)lowThresholdBins)- 1;  
+    }
+
+    if(debug==1){
+      cout << "Recalibration index in Loop 2 is : " << recalibration_factor << endl;
+    }
 
     if(geta1>=eta_min && geta1<=eta_max){
     	
@@ -608,6 +672,11 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
  
       if(te_aggregate_CircularCut > energyCutAggregate){
 	mean_te_by_ge_ge_EtaCut_CircularCut->Fill(ge, te_aggregate_CircularCut_normalised/ge);
+
+	if(debug==1){
+	  cout << "mean_te_by_ge_ge_EtaCut_CircularCut entry " << i << " is : " << te_aggregate_CircularCut_normalised/ge << endl;
+	}
+
       }
 
       if(debug == 1){
@@ -641,7 +710,21 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
     Double_t te_aggregate_CircularCut = 0;
     Double_t te_aggregate_CircularCut_normalised = 0;    
 
-    int recalibration_factor = ceil((ge/30.0)*(Double_t)nSlicesx)- 1;
+    int recalibration_factor = 0;
+
+    
+    if(ge > lowEnergyBin){
+      Double_t eRangeBin = (maxEnergyBin - lowEnergyBin)/highThresholdBins;
+      recalibration_factor = (lowThresholdBins - 1) + ceil(ge/eRangeBin)- 1;
+    }
+ 
+    else{
+      recalibration_factor = ceil((ge/lowEnergyBin)*(Double_t)lowThresholdBins)- 1;  
+    }
+
+    if(debug==1){
+      cout << "Recalibration index in Loop 3 is : " << recalibration_factor << endl;
+    }
 
     if(geta1>=eta_min && geta1<=eta_max){
     	
@@ -728,6 +811,11 @@ void LoopEvalHROG_Oct(int print = 1, int debug = 0, Double_t energyCutAggregate 
       if(te_aggregate_CircularCut > energyCutAggregate){
 	te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated->Fill(ge, ((te_aggregate_CircularCut_normalised/recalibrationArr[recalibration_factor])-ge)/ge);
 	te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp->Fill(ge, ((te_aggregate_CircularCut_normalised/recalibrationArr[recalibration_factor])-ge)/ge);
+
+	if(debug==1){
+	  cout << "te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated entry " << i << " is : " << ((te_aggregate_CircularCut_normalised/recalibrationArr[recalibration_factor])-ge)/ge << endl;
+	}
+
       }
 
       if(debug==1){
