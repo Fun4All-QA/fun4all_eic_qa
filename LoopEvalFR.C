@@ -1,5 +1,5 @@
 /*
-LoopEvalFR.C(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1, Double_t energyCut = 0.0, int MIP_theta_parametrisation = 1)
+> LoopEvalFR.C(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1, Double_t energyCut = 0.0, int MIP_theta_parametrisation = 1)
 - Creates the analysis plots for the combined forward calorimeters FEMC+FHCAL (default parameters for pions)
 - Processing - Eta Cuts, Manual Clustering (or elliptical cuts based on difference between generated and detected azimuth and polar angle), Recalibration, Tower energy cuts on FEMC alone and FEMC+FHCAL as well, and polar angle based energy cuts to eliminate MIPs    
 - Arguments
