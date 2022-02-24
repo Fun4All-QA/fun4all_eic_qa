@@ -1,3 +1,12 @@
+# > LoopEvalPortableCircularCut.csh
+# - Runs LoopEvalPortableCircularCut.C for all detectors
+# - Output file - <detector>_CircularCut.txt, containing the terminal output of LoopEvalPortableCircularCut.C for the given detector
+
+# Authors - Sagar Joshi (ee190002054@iiti.ac.in)
+#           Siddhant Rathi (me190003061@iiti.ac.in)
+ 
+# v1.0
+
 #!/usr/local/bin/tcsh
  setenv HOME /eic/u/$LOGNAME
  source /etc/csh.login
