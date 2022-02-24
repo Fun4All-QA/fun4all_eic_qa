@@ -816,7 +816,7 @@ void LoopEvalFR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1,
   for(int sno = 0; sno < nSlicesx; sno++){
     f->GetList()->Add(slices[sno]);
   }
-  f->Write()
+  f->Write();
 	  
   gStyle -> SetOptStat(11);
   gStyle -> SetOptFit(112);
