@@ -430,12 +430,7 @@ void LoopEvalPortableCircularCut(TString detector, int print = 0, int mips = 1, 
 	if(debug==1){
 	  cout<<"(ge, (te_aggregate_CircularCut-ge)/ge): ("<<ge<<", "<<(te_aggregate_CircularCut-ge)/ge<<")\n";
 	}
-	//te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated->Fill(ge, ((te_aggregate_CircularCut/recalibration_factor)-ge)/ge);
-	//if(debug==1){
-	//cout<<"(ge, ((te_aggregate_CircularCut/recalibration_factor)-ge)/ge: ("<<ge<<", "<<((te_aggregate_CircularCut/recalibration_factor)-ge)/ge<<")\n";
-	//}
-	//te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp->Fill(ge, ((te_aggregate_CircularCut/recalibration_factor)-ge)/ge);
-   
+	
 	te_by_ge_ge_EtaCut->Fill(ge, te_aggregate/ge);
 	if(debug==1){
 	  cout<<"(ge, te_aggregate/ge): ("<<ge<<", "<<te_aggregate/ge<<")\n";
@@ -543,10 +538,6 @@ void LoopEvalPortableCircularCut(TString detector, int print = 0, int mips = 1, 
   TEllipse *el1 = new TEllipse(0,0,x_radius,y_radius);
   TF1 *fExp = new TF1("fExp",eRes,0,30);
   TF1 *fTrue = new TF1("fTrue","[0] + [1]/sqrt(x) + [2]/x",0,30); 
-  //BF1 *meraPyaara = new BF1("VinDond", [x][x][x], 0, 69);
-  /*  TF1 *fitForTemporaryAdjustment = new TF1("fitForTemporaryAdjustment", "gaus", 0, 30);
-  fitForTemporaryAdjustment->SetParameter(1, 0.15);
-  fitForTemporaryAdjustment->SetParameter(2, 0.075);*/
 
   te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp->FitSlicesY(0, 0, -1, 0, "QN");
   TH2D *te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp_2 = (TH2D*)gDirectory->Get("te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp_2");
@@ -738,7 +729,7 @@ void LoopEvalPortableCircularCut(TString detector, int print = 0, int mips = 1, 
     std::cout<<"\nWriting Histograms to File\n";
   }
 
-  TFile *f = new TFile("Energy_verification_EtaCut_CircularCut" + detector + ".root","RECREATE"); 
+  TFile *f = new TFile("Energy_verification_EtaCut_CircularCut_" + detector + ".root","RECREATE"); 
   
   f->GetList()->Add(mean_te_geta_EtaCut);
   f->GetList()->Add(mean_te_gtheta_EtaCut);
@@ -771,48 +762,6 @@ void LoopEvalPortableCircularCut(TString detector, int print = 0, int mips = 1, 
 
   gStyle -> SetOptStat(11);
   gStyle -> SetOptFit(112);
-  
-  
-  /*int sno = 0;
-  TString plusOne = (TString)(sno + 1);
-  TString nameF = detector + "_sigmaE_slice" + arr[sno] + "_EtaCut_CircularCut.png";
-  slices[sno] -> Fit("fit1", "R+");
-  slices[sno] -> Draw("hist same");
-  c->Print(nameF);*/
-
-  /*
-  ///////////////////////////////////////////////////////////////////////////////////////
-
-  sno = 1;
-  plusOne = (TString)(sno + 1);
-  nameF = detector + "_ssj_sigmaE_slice" + arr[sno] + "_EtaCut_CircularCut.png";
-  slices[sno] -> Fit("fit1", "M+");
-  slices[sno] -> Draw("hist same");
-  c->Print(nameF);
-
-  sno = 2;
-  plusOne = (TString)(sno + 1);
-  nameF = detector + "_ssj_sigmaE_slice" + arr[sno] + "_EtaCut_CircularCut.png";
-  slices[sno] -> Fit("fit1", "M+");
-  slices[sno] -> Draw("hist same");
-  c->Print(nameF);
-
-  ///////////////////////////////////////////////////////////////////////////////////////
-  */
-
-  /*Double_t mean = fit1->GetParameter(1);
-  Double_t mean_error = fit1->GetParError(1);
-  Double_t sigma = fit1->GetParameter(2);
-  Double_t sigma_error = fit1->GetParError(2); 
-  Double_t chi2 = (fit1->GetChisquare())/(fit1->GetNDF());
- 
-  TLine *Mean = new TLine(0,mean,30.0/nSlicesx,mean);
-  TLine *Sigma = new TLine(0,sigma,30.0/nSlicesx,sigma);
-  TLine *Chi2 = new TLine(0,chi2,30.0/nSlicesx,chi2);
-  TLine *Periphery_Chi2 = new TLine(30.0/nSlicesx,0,30.0/nSlicesx,chi2);
-  TLine *Sigma_error = new TLine(30.0/(2.0*nSlicesx),sigma-(sigma_error),30.0/(2.0*nSlicesx),sigma+(sigma_error));
-  TLine *Mean_error = new TLine(30.0/(2.0*nSlicesx),mean-(mean_error),30.0/(2.0*nSlicesx),mean+(mean_error));
-  TLine *Point = new TLine(30.0/(2.0*nSlicesx),sigma,30.0/(2.0*nSlicesx),sigma);*/
 
   if(print==1){
     if(debug==1){
@@ -823,33 +772,15 @@ void LoopEvalPortableCircularCut(TString detector, int print = 0, int mips = 1, 
 
     te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp_1->SetAxisRange(mean_min,mean_max,"Y");
     te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp_1->Draw();
-    /*Mean->SetLineColor(1);
-    Mean->SetLineWidth(1); 
-    Mean_error->SetLineColor(1);
-    Mean_error->SetLineWidth(1);
-    Mean->Draw("same");
-    Mean_error->Draw("same");*/
     c->Print(detector + "_meanE_ge_EtaCut_CircularCut.png");
 
     te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp_chi2->SetAxisRange(chi2_min,chi2_max,"Y");
     te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp_chi2->Draw();
-    /*Chi2->SetLineColor(1);
-    Chi2->SetLineWidth(1); 
-    Periphery_Chi2->SetLineColor(1);
-    Periphery_Chi2->SetLineWidth(1);
-    Chi2->Draw("same");
-    Periphery_Chi2->Draw("same");*/
     c->Print(detector + "_chi2E_ge_EtaCut_CircularCut.png");
  
     gStyle -> SetOptStat(0);
     gStyle -> SetOptFit(0);
 
-    /*Sigma->SetLineColor(1);
-    Sigma->SetLineWidth(1); 
-    Sigma_error->SetLineColor(1);
-    Sigma_error->SetLineWidth(1);
-    Point->SetLineColor(3);
-    Point->SetLineWidth(5);*/
     fExp->SetLineColor(4); //38
     fTrue->SetLineColor(2); //46
   
@@ -861,9 +792,6 @@ void LoopEvalPortableCircularCut(TString detector, int print = 0, int mips = 1, 
     te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp_2->Fit("fTrue", "M+");
     te_minus_ge_by_ge_ge_EtaCut_CircularCut_Recalibrated_temp_2->Draw("same");
     fExp->Draw("same");
-    /*Sigma->Draw("same");
-    Sigma_error->Draw("same");
-    Point->Draw("same");*/
   
     TLegend* legend = new TLegend(1.75,1.75);
     legend->SetHeader("Legend", "C");
@@ -882,24 +810,13 @@ void LoopEvalPortableCircularCut(TString detector, int print = 0, int mips = 1, 
 
     gStyle -> SetOptStat(11);
     gStyle -> SetOptFit(112);
-    // ofstream file1;
-    // file1.open("gaus_1-4.txt"); 
     for(int sno = 0; sno < nSlicesx; sno++){  // sno = 1
       TString plusOne = (TString)(sno + 1);
       TString nameF = detector + "_sigmaE_slice" + arr[sno] + "_EtaCut_CircularCut.png";
       slices[sno] -> Fit("fit", "M+");
       slices[sno] -> Draw("hist same");
       c->Print(nameF);
-      // double_t mean = fit->GetParameter(1);
-      // double_t mean_error = fit->GetParError(1);
-      // double_t sigma = fit->GetParameter(2);
-      // double_t sigma_error = fit->GetParError(2); 
-      // double_t chi2 = (fit->GetChisquare())/(fit->GetNDF());
-      // file1 << mean << " " << mean_error << " " << sigma << " " << sigma_error << " " << chi2 << endl;
     }
-    // file1.close();
-
-    
 
     gStyle -> SetOptStat(1);
 
