@@ -1,13 +1,17 @@
-Universe 	= vanilla
-Executable 	= myscript.csh
-notification 	= Never
-Output  	= condor.out
+Universe        = vanilla
+Executable      = myscript.csh
+notification    = Never
+notify_user     = me190003061@iiti.ac.in
+Output          = condor.out
 Error           = condor.err
-Log  		= /dev/null
+Log             = condor.log
+PeriodicHold    = (NumJobStarts>=1 && JobStatus == 1)
+request_memory  = 3800MB
+
 # in case your script is in another directory, set initialdir to it
-#Initialdir  	= 
+#Initialdir    =
 # Jobs by default are allowed 1.8Gb of RAM, you need to ask for more if needed
 # with request_memory, per 2GB memory it allocates another condor slot (and
 # charges your priority for it)
-#  request_memory = 4.1GB
+
 Queue

@@ -1,4 +1,17 @@
-//- Used to combine the evaluator files while running jobs in batches
+/*
+> hadd.C(TString detector)
+- Used to combine the evaluated root files while running jobs in batches
+- Arguments
+  # detector - CEMC, EEMC, FEMC, FHCAL, HCALIN, HCALOUT
+- Output file - merged_Eval_<detector>.root
+*/
+
+/*
+Authors - 	Sagar Joshi (ee190002054@iiti.ac.in)
+		Siddhant Rathi (me190003061@iiti.ac.in)
+
+v2.0
+*/
 
 #include <string.h>
 #include "TChain.h"
@@ -8,6 +21,8 @@
 #include "TKey.h"
 #include "Riostream.h"
 #include <iostream> 
+#include <dirent.h>
+#include <errno.h>
 
 TList *FileList;
 TFile *Target;
@@ -15,27 +30,18 @@ TFile *Target;
 void MergeRootfile( TDirectory *target, TList *sourcelist );
  
  
-void hadd() {
+void hadd(TString detector) {
   // Prepare the files to me merged
-  TString detector;
-  std::cout<<"Please enter the name of the detector (all caps): ";
-  std::cin>>detector;
 
-  if(gSystem->AccessPathName("macros/Eval_" + detector + ".root")) {
-    gSystem->CopyFile("hsimple.root", "macros1/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros2/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros3/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros4/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros5/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros6/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros7/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros8/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros9/Eval_" + detector + ".root");
-    /*gSystem->CopyFile("hsimple.root", "macros10/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros11/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros12/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros13/Eval_" + detector + ".root");
-    gSystem->CopyFile("hsimple.root", "macros14/Eval_" + detector + ".root");*/
+  //std::cout<<"Please enter the name of the detector (all caps): ";
+  //std::cin>>detector;
+
+  int nCopies = successfulJobs; 
+
+  if(gSystem->AccessPathName("EvalFiles/Eval_" + detector + "_0.root")) {
+    for(int i = 1; i < nCopies; i++){
+      gSystem->CopyFile("hsimple.root", "EvalFiles/Eval_" + detector + "_" + TString::Itoa(i,10) + ".root");
+    }
   }
  
   // in an interactive ROOT session, edit the file names
@@ -43,25 +49,13 @@ void hadd() {
   // root > .L hadd.C
   // root > hadd()
  
-  Target = TFile::Open("merged_Eval_" + detector + ".root", "RECREATE" );
- 
+  Target = TFile::Open("merged_Eval_" + detector + ".root", "RECREATE" ); 
   FileList = new TList();
-  FileList->Add( TFile::Open("macros/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros1/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros2/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros3/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros4/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros5/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros6/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros7/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros8/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros9/Eval_" + detector + ".root") );
-  /*FileList->Add( TFile::Open("macros10/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros11/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros12/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros13/Eval_" + detector + ".root") );
-  FileList->Add( TFile::Open("macros14/Eval_" + detector + ".root") );*/
-
+  
+  for(int i = 0; i < nCopies; i++){
+    FileList->Add( TFile::Open("EvalFiles/Eval_" + detector + "_" + TString::Itoa(i,10) + ".root"));
+  }
+      
 
   MergeRootfile( Target, FileList );
  
