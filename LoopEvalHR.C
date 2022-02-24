@@ -1,19 +1,21 @@
 /*
-> LoopEvalMultiFCircularCut.C 
-- Tower energy plots with manual clustering
-- Eta and Circular Cuts
-- Combined FEMC+FHCAL
-- Standalone
-- Output file - energy_verification_EtaCut_CircularCut_FHCAL_FEMC.root
-- Plots made - [sigma_e vs ge], [mean_e vs ge], [chi2_e vs ge], slices for the
-  [(te-ge)/ge vs ge], [te/ge vs ge], [(te-ge)/ge vs ge], both with and without circular cuts.
+> LoopEvalHR.C(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1, Double_t energyCut = 0.0, int MIP_theta_parametrisation = 1)
+- Creates the analysis plots for the combined forward calorimeters CEMC+HCALIN+HCALOUT (default parameters for pions)
+- Processing - Eta Cuts, Manual Clustering (or elliptical cuts based on difference between generated and detected azimuth and polar angle), Recalibration, Tower energy cuts on CEMC alone and CEMC+HCALIN+HCALOUT as well, and polar angle based energy cuts to eliminate MIPs    
+- Arguments
+  # print - saves plots as .png files if not 0
+  # debug - prints debugging messages if not 0; Pipe the output to a file while using this
+  # energyCutAggregate - specify the value for the tower energy cut on CEMC+HCALIN+HCALOUT
+  # energyCut - specify the value for the tower energy cut on individual towers
+  # MIP_theta_parametrization - applies a polar angle dependent energy cut on individual towers of CEMC to eliminate MIPs, based on the parametric equation provided in the code
+ - Output file - energy_verification_EtaCut_CircularCut_CEMC_HCALIN_HCALOUT.root, and the .png plots if generated
 */
 
 /*
   authors - Sagar Joshi      (ee190002054@iiti.ac.in)
             Siddhant Rathi   (me190003061@iiti.ac.in)
 	    
-  version - 1.1
+  version - 2
 
 */
 
