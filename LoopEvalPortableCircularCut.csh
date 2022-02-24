@@ -12,10 +12,10 @@
 
  root.exe -q -b 'LoopEvalPortableCircularCut.C("CEMC")' > CEMC_CircularCut.txt
  root.exe -q -b 'LoopEvalPortableCircularCut.C("EEMC")' > EEMC_CircularCut.txt
- root.exe -q -b 'LoopEvalPortableCircularCut.C("FEMC", 0.5)' > FEMC_CircularCut.txt
- root.exe -q -b 'LoopEvalPortableCircularCut.C("FHCAL", 10)' > FHCAL_CircularCut.txt
+ root.exe -q -b 'LoopEvalPortableCircularCut.C("FEMC")' > FEMC_CircularCut.txt
+ root.exe -q -b 'LoopEvalPortableCircularCut.C("FHCAL")' > FHCAL_CircularCut.txt
  root.exe -q -b 'LoopEvalPortableCircularCut.C("HCALIN")' > HCALIN_CircularCut.txt
- root.exe -q -b 'LoopEvalPortableCircularCut.C("HCALOUT", 5)' > HCALOUT_CircularCut.txt
+ root.exe -q -b 'LoopEvalPortableCircularCut.C("HCALOUT")' > HCALOUT_CircularCut.txt
  
  echo Done
 
