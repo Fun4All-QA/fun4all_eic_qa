@@ -75,7 +75,7 @@ void LoopEvalHR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1,
   
   //variable binning code end
 
-  TString detector = "HCALIN_HCALOUT_CEMC";
+  TString detector = "CEMC_HCALIN_HCALOUT";
   TFile *f1 = new TFile("merged_Eval_HCALIN.root","READ");
   TFile *f2 = new TFile("merged_Eval_HCALOUT.root","READ"); 
   TFile *f3 = new TFile("merged_Eval_CEMC.root","READ"); 
@@ -953,7 +953,7 @@ void LoopEvalHR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1,
     std::cout<<"\nWrite Histograms to File\n";
   }
 
-  TFile *f = new TFile("energy_verification_EtaCut_CircularCut" + detector + ".root","RECREATE"); 
+  TFile *f = new TFile("energy_verification_EtaCut_CircularCut_" + detector + ".root","RECREATE"); 
     
   f->GetList()->Add(te_by_ge_ge_EtaCut);
   f->GetList()->Add(te_by_ge_ge_EtaCut_CircularCut);
@@ -972,6 +972,8 @@ void LoopEvalHR(int print = 1, int debug = 0, Double_t energyCutAggregate = 0.1,
     f->GetList()->Add(slices[sno]);
   }
 
+  f->Write();
+	  
   gStyle -> SetOptStat(11);
   gStyle -> SetOptFit(112);
   
