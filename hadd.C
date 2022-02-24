@@ -1,4 +1,17 @@
-//- Used to combine the evaluator files while running jobs in batches
+/*
+> hadd.C(TString detector)
+- Used to combine the evaluated root files while running jobs in batches
+- Arguments
+  # detector - CEMC, EEMC, FEMC, FHCAL, HCALIN, HCALOUT
+- Output file - merged_Eval_<detector>.root
+*/
+
+/*
+Authors - 	Sagar Joshi (ee190002054@iiti.ac.in)
+		Siddhant Rathi (me190003061@iiti.ac.in)
+
+v2.0
+*/
 
 #include <string.h>
 #include "TChain.h"
