@@ -10,7 +10,11 @@
 #include <G4_HcalIn_ref.C>
 #include <G4_HcalOut_ref.C>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wundefined-internal"
 #include <eicqa_modules/QAExample.h>
+#pragma GCC diagnostic pop
+
 #include <eicqa_modules/QAG4SimulationEicCalorimeter.h>
 #include <eicqa_modules/QAG4SimulationEicCalorimeterSum.h>
 
