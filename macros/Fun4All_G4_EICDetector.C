@@ -252,7 +252,7 @@ int Fun4All_G4_EICDetector(
 //  Enable::DIRC = true; 
 
   // EICDetector geometry - 'hadron' direction
-  Enable::RICH = true;
+  // Enable::RICH = true; // disable RICH - it seems to add primary particles for some unknown reason
   Enable::AEROGEL = true;
 
   Enable::FEMC = true;
