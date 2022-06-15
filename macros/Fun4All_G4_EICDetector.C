@@ -260,6 +260,8 @@ int Fun4All_G4_EICDetector(
   Enable::FEMC_TOWER = Enable::FEMC && true;
   Enable::FEMC_CLUSTER = Enable::FEMC_TOWER && true;
 //  Enable::FEMC_EVAL = Enable::FEMC_CLUSTER && true;
+  G4FEMC::sampling_fraction = 0.4; // for pi
+//  G4FEMC::sampling_fraction = 0.249; // for e-
 
   Enable::FHCAL = true;
   //  Enable::FHCAL_ABSORBER = true;

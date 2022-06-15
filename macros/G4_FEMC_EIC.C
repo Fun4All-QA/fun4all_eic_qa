@@ -43,6 +43,7 @@ namespace Enable
 namespace G4FEMC
 {
   // from ForwardEcal/mapping/towerMap_FEMC_v007.txt
+  double sampling_fraction = 0.4; // for pi, 0.249 for e
   const double Gz0 = 310.;
   const double Gdz = 36.5;
   const double outer_radius = 182.655;
@@ -323,11 +324,11 @@ void FEMC_Towers()
   TowerCalibration2->set_calib_algorithm(RawTowerCalibration::kSimple_linear_calibration);
   if (G4FEMC::SETTING::readoutsplit)
   {
-    TowerCalibration2->set_calib_const_GeV_ADC(1.0 / (0.249 * 0.84));  // sampling fraction = 0.249 for e-
+    TowerCalibration2->set_calib_const_GeV_ADC(1.0 / (sampling_fraction * 0.84));
   }
   else
   {
-    TowerCalibration2->set_calib_const_GeV_ADC(1.0 / 0.249);  // sampling fraction = 0.249 for e-
+    TowerCalibration2->set_calib_const_GeV_ADC(1.0 / sampling_fraction); 
   }
   TowerCalibration2->set_pedstal_ADC(0);
   se->registerSubsystem(TowerCalibration2);
